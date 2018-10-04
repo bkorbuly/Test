@@ -7,6 +7,10 @@ class AddLvlButton extends React.Component {
     }
 
     handleSubmit = (event) => {
+        //TODO
+        //validation
+        //if(this.state.green > this.props.data.){
+        //}
         event.preventDefault();
         console.log('Event: Submit Form', this.state.name, this.state.green, this.state.red,);
         this.props.onSubmit(this.state);
