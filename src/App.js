@@ -16,7 +16,8 @@ class App extends Component {
   addNewLvl = (lvlInfo) =>{
     console.log(lvlInfo);
     this.setState(prevState => ({
-      data: prevState.data.concat(lvlInfo)
+      //data: prevState.data.map(
+      //TODO insert an element at a specified index  
     }));
     console.log(this.state.data);
   };

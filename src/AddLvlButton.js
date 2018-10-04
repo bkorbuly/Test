@@ -3,7 +3,8 @@ import React from 'react';
 class AddLvlButton extends React.Component {
     state = { name: '',
               green:'',
-              red: ''
+              red: '',
+              index: '',
     }
 
     handleSubmit = (event) => {
@@ -12,9 +13,9 @@ class AddLvlButton extends React.Component {
         //if(this.state.green > this.props.data.){
         //}
         event.preventDefault();
-        console.log('Event: Submit Form', this.state.name, this.state.green, this.state.red,);
+        console.log('Event: Submit Form', this.state.name, this.state.green, this.state.red, this.state.index);
         this.props.onSubmit(this.state);
-        this.setState({name: '', green:'', red: ''})
+        this.setState({name: '', green:'', red: '', index: ''})
     };
 
     render() {
@@ -32,6 +33,10 @@ class AddLvlButton extends React.Component {
                     value = {this.state.red}
                     onChange = {(event) => this.setState({ red: event.target.value})}
                     placeholder = "Red Value" required />
+                <input type="number"
+                    value = {this.state.index}
+                    onChange = {(event) => this.setState({ index: event.target.value})}
+                    placeholder = "Index" required />
                 <button type="submit">Add new Level</button>
             </form>
         )
