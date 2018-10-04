@@ -16,14 +16,14 @@ const data = [
 const FunnelChart = (props) => {
     return(
         //<ResponsiveContainer>
-            <BarChart width={600} height={300} data={data}
+            <BarChart width={1200} height={600} data={data}
                       barGap="0"
                       barCategoryGap="0"
-                      layout="horizontal"
+                      layout="vertical"
                       margin={{top: 0, right: 0, left: 0, bottom: 0}}>
                 <CartesianGrid visibility="hidden" />
-                <XAxis dataKey="name" />
-                <YAxis />
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="name" />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="pv" fill="#8884d8" stackId="a" />
