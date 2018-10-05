@@ -6,7 +6,14 @@ import FunnelChart from './FunnelChart.js'
 import AddLvlButton from './AddLvlButton';
 import RemoveLvlButton from './RemoveLvlButton';
 
-
+var lvlObjectCreation = (lvlInfo) => {
+      const lvl = {
+      name: lvlInfo.name,
+      green: lvlInfo.green,
+      red: lvlInfo.red,
+      }
+      return lvl;
+}
 
 class App extends Component {
   state = {
@@ -14,12 +21,14 @@ class App extends Component {
   };
 
   addNewLvl = (lvlInfo) =>{
-    console.log(lvlInfo);
-    this.setState(prevState => ({
-      //data: prevState.data.map(
-      //TODO insert an element at a specified index  
-    }));
-    console.log(this.state.data);
+    const lvl = lvlObjectCreation(lvlInfo);
+    this.setState(prevState => {
+        const newData = prevState.data.slice();
+        newData.splice(lvlInfo.index, 0, lvl);       
+        return {
+          data : newData
+        }    
+    });
   };
 
   removeLvl = (lvlName) =>{

@@ -1,7 +1,8 @@
 import React from 'react';
 
 class AddLvlButton extends React.Component {
-    state = { name: '',
+    state = { 
+              name: '',
               green:'',
               red: '',
               index: '',
@@ -33,7 +34,7 @@ class AddLvlButton extends React.Component {
                     value = {this.state.red}
                     onChange = {(event) => this.setState({ red: event.target.value})}
                     placeholder = "Red Value" required />
-                <input type="number"
+                <input type="number" min='0'
                     value = {this.state.index}
                     onChange = {(event) => this.setState({ index: event.target.value})}
                     placeholder = "Index" required />
