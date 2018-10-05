@@ -3,8 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import { data } from './data.js'
 import FunnelChart from './FunnelChart.js'
-import AddLvlButton from './AddLvlButton';
-import RemoveLvlButton from './RemoveLvlButton';
+import AddLvlButton from './AddLvlButton.js';
+import EditLvlButton from './EditLvlButton.js';
+import RemoveLvlButton from './RemoveLvlButton.js';
 
 var lvlObjectCreation = (lvlInfo) => {
       const lvl = {
@@ -31,6 +32,13 @@ class App extends Component {
     });
   };
 
+  editLvl = (lvlInfo) =>{
+    const lvl = lvlObjectCreation(lvlInfo);
+    this.setState(prevState => ({
+          data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)          
+    }));
+  };
+
   removeLvl = (lvlName) =>{
     console.log(lvlName);
     this.setState(prevState => ({
@@ -42,9 +50,10 @@ class App extends Component {
     return (
       <div width="1500px" height="1500px">
         <h1>Funnel Calculator</h1>
-        <FunnelChart data={this.state.data}/>
-        <AddLvlButton onSubmit={this.addNewLvl}/>
-        <RemoveLvlButton onSubmit={this.removeLvl} />
+        <FunnelChart data={this.state.data} />
+        <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length}/>
+        <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}/>
+        <RemoveLvlButton onSubmit={this.removeLvl} datalength={this.state.data.length}/>
       </div>
     );
   }
