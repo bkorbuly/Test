@@ -53,7 +53,7 @@ class App extends Component {
         <FunnelChart data={this.state.data} />
         <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length}/>
         <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}/>
-        <RemoveLvlButton onSubmit={this.removeLvl} datalength={this.state.data.length}/>
+        <RemoveLvlButton onSubmit={this.removeLvl} />
       </div>
     );
   }

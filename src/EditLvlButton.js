@@ -6,6 +6,8 @@ class EditLvlButton extends React.Component {
               green:'',
               red: '',
               index: '',
+              conversionrate:'',
+              isMaxIndex: false,
     }
 
     handleSubmit = (event) => {
@@ -19,6 +21,17 @@ class EditLvlButton extends React.Component {
         this.setState({name: '', green:'', red: '', index: ''})
     };
 
+    checkIndex = () => {
+        console.log('Before check isMaxIndex',this.state.isMaxIndex);
+        console.log('Before check index', this.state.index);
+        console.log('Before check datalength', this.props.datalength);
+        console.log('Before check :', this.state.index > this.props.datalength ? true : false);
+        this.setState( {isMaxIndex:  ((this.state.index >= 0)  && (this.state.index  < this.props.datalength)) ? false : true
+            //setState ASNYC
+        }, () => console.log(this.state.index, this.state.isMaxIndex));
+        
+    }
+
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
@@ -26,6 +39,10 @@ class EditLvlButton extends React.Component {
                     value = {this.state.name}
                     onChange = {(event) => this.setState({ name: event.target.value})}
                     placeholder = "Level Name" required />
+                <input type="number" min="0" max="100"
+                    value = {this.state.conversionRate}
+                    onChange = {(event) => this.setState({ conversionRate: event.target.value})}
+                    placeholder = "Conversion Rate(%)" required />                
                 <input type="number"
                     value = {this.state.green}
                     onChange = {(event) => this.setState({ green: event.target.value})}
@@ -36,7 +53,7 @@ class EditLvlButton extends React.Component {
                     placeholder = "Red Value" required />
                 <input type="number" min='0'
                     value = {this.state.index}
-                    onChange = {(event) => this.setState({ index: event.target.value})}
+                    onChange = {(event) => this.setState({ index: event.target.value}, () => this.checkIndex())}
                     placeholder = "Index" required />
                 <button type="submit">Edit Level</button>
             </form>
