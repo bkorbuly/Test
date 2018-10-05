@@ -6,6 +6,9 @@ class AddLvlButton extends React.Component {
               green:'',
               red: '',
               index: '',
+              conversionRate: '',
+              isMaxIndex: false,
+
     }
 
     handleSubmit = (event) => {
@@ -13,11 +16,24 @@ class AddLvlButton extends React.Component {
         //validation
         //if(this.state.green > this.props.data.){
         //}
+        //isMaxIndex = this.state.index < this.props.datalength ? true : false;
         event.preventDefault();
-        console.log('Event: Submit Form', this.state.name, this.state.green, this.state.red, this.state.index);
+        console.log(this.state.green);
+        console.log('Event: Submit Form', this.state.name, this.state.green, this.state.red, this.state.index, this.state.conversionRate);
         this.props.onSubmit(this.state);
-        this.setState({name: '', green:'', red: '', index: ''})
-    };
+        this.setState({name: '', green:'', red: '', index: '', conversionRate:'',})
+    }
+
+    checkIndex = () => {
+        console.log('Before check isMaxIndex',this.state.isMaxIndex);
+        console.log('Before check index', this.state.index);
+        console.log('Before check datalength', this.props.datalength);
+        console.log('Before check :', this.state.index > this.props.datalength ? true : false);
+        this.setState( {isMaxIndex:  ((this.state.index >= 0)  && (this.state.index  < this.props.datalength)) ? false : true
+            //setState ASNYC
+        }, () => console.log(this.state.index, this.state.isMaxIndex));
+        
+    }
 
     render() {
         return(
@@ -26,6 +42,10 @@ class AddLvlButton extends React.Component {
                     value = {this.state.name}
                     onChange = {(event) => this.setState({ name: event.target.value})}
                     placeholder = "Level Name" required />
+                <input type="number" min="0" max="100"
+                    value = {this.state.conversionRate}
+                    onChange = {(event) => this.setState({ conversionRate: event.target.value})}
+                    placeholder = "Conversion Rate(%)" required />
                 <input type="number"
                     value = {this.state.green}
                     onChange = {(event) => this.setState({ green: event.target.value})}
@@ -36,9 +56,9 @@ class AddLvlButton extends React.Component {
                     placeholder = "Red Value" required />
                 <input type="number" min='0'
                     value = {this.state.index}
-                    onChange = {(event) => this.setState({ index: event.target.value})}
+                    onChange = {(event) => this.setState({ index: event.target.value}, () => this.checkIndex())}
                     placeholder = "Index" required />
-                <button type="submit">Add new Level</button>
+                <button type="submit" disabled={this.state.isMaxIndex}>Add new Level</button>
             </form>
         )
     };
