@@ -1,17 +1,8 @@
 import React from 'react';
 
-var calculateDataBasedonConversionRate = (props, state) => {
-    if(state.index == ''){
-        return;
-    }
-    console.log(state.isMaxIndex);
-    if(state.isMaxIndex){
-        return;
-    }
-    console.log(props.data[state.index].green);
-    console.log(state.conversionRate);
-    console.log(props.data[state.index].green * state.conversionRate/100);
-    console.log(1-state.conversionRate/100);
+var calculateDataBasedOnConversionRate = (props, state) => {
+    if(state.index == '') { return }
+    if(state.isMaxIndex) { return }
     if(state.index == 0){
         return { green: props.data[state.index].green * 1,
                 red: 0 };
@@ -21,6 +12,18 @@ var calculateDataBasedonConversionRate = (props, state) => {
     };
 }
 
+var calculateDataBasedOnGreen = (props, state) => {
+    if(state.green == '') {return}
+    if(state.green == 0) {return}
+    return { conversionRate: (state.green/state.green + props[state.index].red))*100,}
+}
+
+var calculateValue = {
+    conversionRate: (props, state) => calculateDataBasedOnConversionRate(props, state),
+    green: (props, state) => calculateDataBasedOnGreen(props, state),
+    //{id:"red", handler:''},
+};
+
 class AddLvlButton extends React.Component {
     state = { 
               name: '',
@@ -29,7 +32,7 @@ class AddLvlButton extends React.Component {
               index: '',
               conversionRate:'',
               isMaxIndex: false,
-
+              eventTargetId:'',
     }
     
     upperLimitCheck = () => {
@@ -44,26 +47,14 @@ class AddLvlButton extends React.Component {
     }
 
     checkIndex = () => {
-        //console.log('Before check index', this.state.index);
-        //console.log('Before check isMaxIndex',this.state.isMaxIndex);
-        //console.log('Before check datalength', this.props.datalength);
-        //console.log('Before check :', this.state.index > this.props.datalength ? true : false);
-        console.log('CheckIndex',this.upperLimitCheck());
-        console.log('ture or false', ((this.state.index >= 0)  && (this.upperLimitCheck())));
         this.setState( {isMaxIndex:  ((this.state.index >= 0)  && (this.upperLimitCheck())) ? false : true
             //setState ASNYC
-        }, () => this.handleConversionRate(), console.log('checkindex', this.state.isMaxIndex));
+        }, () => this.handleConversionRate());
         
     }
 
     handleConversionRate = () => {
-        //console.log('GOTTCA');
-        //console.log(this.props.data);
-        //console.log('Current value of index of state:', this.state.index);
-        //console.log(this.props.data[this.state.index].green);
-        //console.log('calclated percentage:', this.state.conversionRate/100);
-        this.setState( calculateDataBasedonConversionRate(this.props, this.state),
-            () => console.log('new calculated vale of green:', this.state.green));
+        this.setState(calculateValue[this.state.eventTargetId](this.props, this.state));
     }
 
     render() {
@@ -71,19 +62,23 @@ class AddLvlButton extends React.Component {
             <form onSubmit={this.handleSubmit}>
                 <input type="text"
                     value = {this.state.name}
+                    id="lvlName"
                     onChange = {(event) => this.setState({ name: event.target.value})}
                     placeholder = "Level Name" required />
                 <input type="number" min="0" max="100"
                     value = {this.state.conversionRate}
-                    onChange = {(event) => this.setState({ conversionRate: event.target.value})}
+                    id="conversionRate"
+                    onChange = {(event) => this.setState({ conversionRate: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.handleConversionRate())}
                     placeholder = "Conversion Rate(%)" required />
                 <input type="number"
                     value = {this.state.green}
-                    onChange = {(event) => this.setState({ green: event.target.value})}
+                    id="green"
+                    onChange = {(event) => this.setState({ green: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.handleConversionRate())}
                     placeholder = "Green Value" required />
                 <input type="number"
                     value = {this.state.red}
-                    onChange = {(event) => this.setState({ red: event.target.value})}
+                    id="red"
+                    onChange = {(event) => this.setState({ red: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.handleConversionRate())}
                     placeholder = "Red Value" required />
                 <input type="number" min='0' max={this.props.datalength}
                     value = {this.state.index}
