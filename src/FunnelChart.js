@@ -16,8 +16,8 @@ const FunnelChart = (props) => {
                     <YAxis type="category" dataKey="name" />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="green" fill="#82ca9d" stackId="a" />
-                    <Bar dataKey="red" fill="#FFa9a" stackId="a" />
+                    <Bar dataKey="green" fill="#82ca9d" stackId="a"/>
+                    <Bar dataKey="red" fill="red" stackId="a" />
                 </BarChart>           
             //</ResponsiveContainer>
             //<Bar dataKey="Red" fill="#8884d8" stackId="a" />

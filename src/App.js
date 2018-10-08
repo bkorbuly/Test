@@ -12,6 +12,7 @@ var lvlObjectCreation = (lvlInfo) => {
       name: lvlInfo.name,
       green: lvlInfo.green,
       red: lvlInfo.red,
+      conversionRate: lvlInfo.conversionRate,
       }
       return lvl;
 }
@@ -29,21 +30,38 @@ class App extends Component {
         return {
           data : newData
         }    
-    });
+    },() => this.reCalculating(), console.log(data));
   };
 
   editLvl = (lvlInfo) =>{
     const lvl = lvlObjectCreation(lvlInfo);
     this.setState(prevState => ({
-          data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)          
-    }));
+          data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)      
+          }
+    ),() => this.reCalculating());
   };
 
   removeLvl = (lvlName) =>{
     console.log(lvlName);
     this.setState(prevState => ({
       data: prevState.data.filter(lvl => lvl.name.toLowerCase() !== lvlName.name.toLowerCase())
-    }));
+      }
+    ),() => this.reCalculating());
+  };
+
+  reCalculating = () => {
+    console.log('Gotcha');
+    this.setState( prevState => ({
+        data: prevState.data.map((lvl, index, arr) => {
+        console.log('The old array and index', arr[index], index, lvl.green);
+        console.log(index != 0 ? lvl.green = arr[index - 1].green * (lvl.conversionRate/100) : lvl);
+        if(index != 0){
+          lvl.green = arr[index - 1].green * (lvl.conversionRate/100);
+          lvl.red = arr[index - 1].green * (1 - lvl.conversionRate/100);
+        }
+        return lvl
+        }      
+    )}), () => console.log(this.state.data))   
   };
 
   render() {
@@ -51,7 +69,7 @@ class App extends Component {
       <div width="1500px" height="1500px">
         <h1>Funnel Calculator</h1>
         <FunnelChart data={this.state.data} />
-        <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length}/>
+        <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length} data={this.state.data}/>
         <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}/>
         <RemoveLvlButton onSubmit={this.removeLvl} />
       </div>
