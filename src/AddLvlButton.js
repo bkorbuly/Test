@@ -13,9 +13,12 @@ var calculateDataBasedOnConversionRate = (props, state) => {
 }
 
 var calculateDataBasedOnGreen = (props, state) => {
-    if(state.green == '') {return}
-    if(state.green == 0) {return}
-    return { conversionRate: (state.green/state.green + props[state.index].red))*100,}
+    console.log(props);
+    if(state.index == '') { return }
+    if(state.isMaxIndex) { return }
+    if(state.red == '' || state.red == 0) {
+        return { conversionRate: (props.data[state.index].green/(props.data[state.index].green + 0))*100,}
+    }
 }
 
 var calculateValue = {
