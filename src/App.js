@@ -17,6 +17,14 @@ var lvlObjectCreation = (lvlInfo) => {
       return lvl;
 }
 
+var roundedBars = (arr) => {
+  console.log('Toucheee');
+  console.log(arr);
+  arr.map((lvl) => lvl.red == 0 ?
+                "[0, 15, 0, 15]" : "[0, 0, 0, 0]")
+}
+
+
 class App extends Component {
   state = {
     data
@@ -39,6 +47,7 @@ class App extends Component {
           data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)      
           }
     ),() => this.reCalculating());
+    console.log('Dasdas');
   };
 
   removeLvl = (lvlName) =>{
@@ -66,11 +75,11 @@ class App extends Component {
 
   render() {
     return (
-      <div width="1500px" height="1500px">
+      <div width="1000px" height="1500px">
         <h1>Funnel Calculator</h1>
-        <FunnelChart data={this.state.data} />
-        <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length} data={this.state.data}/>
-        <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}/>
+        <FunnelChart data={this.state.data} roundedBars={roundedBars(data)}/>
+        <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length} data={this.state.data} />
+        <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length} />
         <RemoveLvlButton onSubmit={this.removeLvl} />
       </div>
     );
