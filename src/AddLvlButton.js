@@ -76,11 +76,13 @@ class AddLvlButton extends React.Component {
                 <input type="number"
                     value = {this.state.green}
                     id="green"
+                    //TODO
                     onChange = {(event) => this.setState({ green: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.handleConversionRate())}
                     placeholder = "Green Value" required />
                 <input type="number"
                     value = {this.state.red}
                     id="red"
+                    //TODO
                     onChange = {(event) => this.setState({ red: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.handleConversionRate())}
                     placeholder = "Red Value" required />
                 <input type="number" min='0' max={this.props.datalength}
