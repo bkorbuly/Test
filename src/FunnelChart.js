@@ -13,10 +13,6 @@ class FunnelChart extends React.Component {
             data: this.props.data
             }
     
-    handleOnchange = () => {
-        this.props.reCalculating(this.state)
-    }
-
     render(){
         return(
                 <ResponsiveContainer width = "95%" height={500}>
@@ -29,7 +25,7 @@ class FunnelChart extends React.Component {
                         <XAxis type="number" />
                         <YAxis type="category" dataKey="name" margin={{top: 100}}/>
                         <Legend />
-                        <Bar dataKey="green" fill="#80C25D" stackId="a" padding="50" margin="0">
+                        <Bar dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35}>
                         {
                                 this.props.data.map((entry, index) => (
                                     <Cell key={`cell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} />

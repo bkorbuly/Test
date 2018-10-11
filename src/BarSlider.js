@@ -1,21 +1,22 @@
 import React from 'react';
 
-const handleClick = (element) => {
-  console.log('Gottcha!!!!', element);
-}
-
-class BarSlider extends React.Component {
+class BarSlider extends React.Component{   
+    constructor(props){
+        super(props);
+        this.state.circlePosition = this.props.x + (this.props.width) * (this.props.value / 100)
+        console.log(this.state.circlePosition);
+    }
     state = {
-        percentage: this.props.value,
-        min: this.props.x, 
-        max: this.props.width,
-        data: this.props.data,
-        isDragging: false,
-        xDistance: this.props.x + this.props.width,
-        totalGreen: this.props.x + this.props.width,
+        min:this.props.x,
+        max:this.props.width + this.props.x,
+        conversionRate: this.props.data.conversionRate,
     }
 
-    handleMouseDown(e) {
+    Absoulteposition = (conversionRate) =>{
+        return this.state.max * (conversionRate / 100)
+    }
+
+    handleMouseDown = (e) =>{
         console.log('MouseDown');
         this.setState({ isDragging: true });
         e.stopPropagation();
@@ -31,35 +32,31 @@ class BarSlider extends React.Component {
 
     handleMouseMove(e) {        
         if (this.state.isDragging) {
-            console.log('xdistance', xDistance);
-          
-          let xDistance = ( e.clientX );
-          if (xDistance < this.state.min) xDistance = this.props.x;
-          if (xDistance > this.state.max) xDistance = this.props.width;
+            console.log('eclintX', e.clintX);          
+          let newCirclePosition = ( e.clientX );
+          if (newCirclePosition < this.state.min) newCirclePosition = this.props.x;
+          if (newCirclePosition > this.state.max) newCirclePosition = this.props.width + this.props.x;
     
-          this.setState({ xDistance },() => console.log('xdistance', xDistance));
-          
-          //if (onChange) onChange(xDistance);
+          this.setState({ circlePosition: newCirclePosition })
         }
         e.stopPropagation();
         e.preventDefault();
     }
+        
 
     render() {
-        console.log(this.props);
         return (
-        <g ref={c => { this.rootDOM = c; } } >
-            <text x={this.state.xDistance} y={this.props.y + (this.props.height / 2)} fill="#000000" textAnchor="middle" dominantBaseline="middle" height={this.props.height} width={50}
-            onMouseDown={(e) => this.handleMouseDown(e)}
-            onMouseUp={(e) => this.handleMouseUp(e)}
-            onMouseMove={(e) => this.handleMouseMove(e)}
-            onChange={(e) => this.setState({xDistance: e.target.value},() => this.props.onChange())}         
-            >
-            {Math.round(this.state.xDistance / this.state.totalGreen *100)}
-            </text>
-        </g>
+            <g>
+               <rect fill="red" x={this.props.x} y={this.props.y + this.props.height / 2 - 2.5 } width={this.props.width} height={5}
+               onMouseDown={(e) => this.handleMouseDown(e)}
+               onMouseUp={(e) => this.handleMouseUp(e)}
+               onMouseMove={(e) => this.handleMouseMove(e)}
+               />                
+               <circle r={5} fill="black" cx={this.state.circlePosition} cy={this.props.y + this.props.height / 2}/> 
+            </g>
+
         );
     }
-  };
+};
 
-  export default BarSlider;
+export default BarSlider;
