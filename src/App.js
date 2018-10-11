@@ -34,12 +34,13 @@ class App extends Component {
   };
 
   editLvl = (lvlInfo) =>{
+    console.log('editLvl',lvlInfo);
     const lvl = lvlObjectCreation(lvlInfo);
+    console.log(lvl);
     this.setState(prevState => ({
           data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)      
           }
     ),() => this.reCalculating());
-    console.log('Dasdas');
   };
 
   removeLvl = (lvlName) =>{
@@ -51,11 +52,9 @@ class App extends Component {
   };
 
   reCalculating = () => {
-    console.log('Gotcha');
+    console.log('Recalculating the whole chart');
     this.setState( prevState => ({
         data: prevState.data.map((lvl, index, arr) => {
-        console.log('The old array and index', arr[index], index, lvl.green);
-        console.log(index != 0 ? lvl.green = arr[index - 1].green * (lvl.conversionRate/100) : lvl);
         if(index != 0){
           lvl.green = arr[index - 1].green * (lvl.conversionRate/100);
           lvl.red = arr[index - 1].green * (1 - lvl.conversionRate/100);
@@ -69,7 +68,7 @@ class App extends Component {
     return (
       <div width="1000px" height="1500px">
         <h1>Funnel Calculator</h1>
-        <FunnelChart data={this.state.data} />
+        <FunnelChart data={this.state.data} onChanged={this.editLvl}/>
         <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length} data={this.state.data} />
         <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length} />
         <RemoveLvlButton onSubmit={this.removeLvl} />

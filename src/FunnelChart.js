@@ -11,7 +11,13 @@ var roundedBars = (entry) => {
 class FunnelChart extends React.Component {    
     state = {
             data: this.props.data
-            }
+    }
+
+    onChanged = (conversionRate, i) => {
+        console.log("gottcha");
+        this.props.data[i].conversionRate = conversionRate
+        this.props.onChanged(this.state.data[i])
+    }
     
     render(){
         return(
@@ -25,15 +31,14 @@ class FunnelChart extends React.Component {
                         <XAxis type="number" />
                         <YAxis type="category" dataKey="name" margin={{top: 100}}/>
                         <Legend />
-                        <Bar dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35}>
+                        <Bar dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35} >
                         {
                                 this.props.data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} />
-                                    
+                                    <Cell key={`cell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} />,
+                                    <LabelList dataKey="conversionRate" content={ <BarSlider onChanged={this.onChanged} i={index}/>  }  />
                                 ))
                         }                        
-                            <LabelList dataKey="conversionRate" content={ customizedLabel }  />
-                            <LabelList dataKey="conversionRate"content={ <BarSlider data={this.state.data} />  }  />
+                            <LabelList dataKey="conversionRate" content={ customizedLabel }  />                                                   
                         </Bar>                    
                         <Bar dataKey="red" fill="#C92E25" stackId="a" radius={[0, 15, 15, 0]} />
                     </BarChart>           
