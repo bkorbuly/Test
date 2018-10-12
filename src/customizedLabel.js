@@ -6,8 +6,6 @@ const handleClick = (element) => {
 
 const customizedLabel = (props) => {
     const { x, y, width, height, value } = props;
-    const radius = 17;
-    console.log(props);
     return (
       <g>
         <text x={x + width / 2} y={y + (height / 2)} fill="#000000" textAnchor="middle" dominantBaseline="middle" onClick={(element)=> handleClick(element)}>

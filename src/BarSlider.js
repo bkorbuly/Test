@@ -1,66 +1,74 @@
 import React from 'react';
 
-class BarSlider extends React.Component{   
-    constructor(props){
-        super(props);
-        this.state.circlePosition = this.props.x + (this.props.width) * (this.props.value / 100)
-        console.log(this.state.circlePosition);
-    }
+const BarSlider = (props) => {   
 
-    state = {
-        min:this.props.x,
-        max:this.props.width + this.props.x,
-        conversionRate: this.props.value,
-        circlePosition: '',
-    }
-
-    handleMouseDown = (e) =>{
-        console.log('MouseDown');
-        this.setState({ isDragging: true }, () => console.log(this.state.isDragging));
-        e.stopPropagation();
-        e.preventDefault();
-    }
-
-    handleMouseUp(e) {
-        console.log('MouseUP');
-        this.setState({ isDragging: false }, () => console.log(this.state.isDragging));
-        e.stopPropagation();
-        e.preventDefault();
-    }
-
-    handleMouseMove(e) {        
-        if (this.state.isDragging) {
-            console.log('eclintX', e.clintX);          
-          let newCirclePosition = ( e.clientX );
-          if (newCirclePosition < this.state.min) newCirclePosition = this.props.x;
-          if (newCirclePosition > this.state.max) newCirclePosition = this.props.width + this.props.x;
+    const min = props.x;
+    const max = props.width + props.x;
+    let conversionRate = props.value;
+    let circlePosition = props.x + (props.width) * (props.value / 100);
+    let isDragging = false;
+    let eX = 0;   
     
-          this.setState({ circlePosition: newCirclePosition, conversionRate: (this.state.circlePosition - this.state.min) / (this.state.max - this.state.min) * 100 }, console.log(this.state.conversionRate))
-          console.log(this.props);
-          this.props.onChanged(this.state.conversionRate, this.props.index);
-        }
-        
+    console.log();
+    const consoling = () =>{
+        console.log('$$$$$$$$')
+        console.log('min', min)
+        console.log('max', max)
+        console.log('circleposition: ',circlePosition)
+        console.log('conversionRate: ',conversionRate)
+    }
+    
+
+    const handleMouseDown = (e) =>{
+        isDragging = true;
+        console.log(isDragging);
         e.stopPropagation();
         e.preventDefault();
     }
-        
 
-    render() {
-        return (
-            <g>
-               <rect fill="red" x={this.props.x} y={this.props.y + this.props.height / 2 - 5 } width={this.props.width} height={10}
-               onMouseDown={(e) => this.handleMouseDown(e)}
-               onMouseUp={(e) => this.handleMouseUp(e)}
-               onMouseMove={(e) => this.handleMouseMove(e)}
-               />                
-               <circle r={5} fill="black" cx={this.state.circlePosition} cy={this.props.y + this.props.height / 2}
-               onMouseUp={(e) => this.handleMouseUp(e)}
-               onMouseDown={(e) => this.handleMouseDown(e)}
-               /> 
-            </g>
-
-        );
+    const handleMouseUp = (e) => {
+        isDragging= false;
+        console.log(isDragging);
+        e.stopPropagation();
+        e.preventDefault();
     }
+
+    const handleMouseMove = (e) => {        
+        if (isDragging) {          
+          let newCirclePosition = ( eX );
+          console.log(newCirclePosition)
+          consoling();
+          
+          if (newCirclePosition < min) newCirclePosition = min;
+          if (newCirclePosition > max) newCirclePosition = max;
+          console.log(newCirclePosition)
+          circlePosition = newCirclePosition
+          console.log('/////////')
+          console.log('circlePostion - min: ',circlePosition, min, circlePosition-min)
+          console.log('max, min, max-min: ', max, min, max-min)
+          console.log('calculating new converesion rate:', ((circlePosition - min) / (max - min)) * 100 )
+          console.log('/////////')
+          conversionRate = ((circlePosition - min) / ((max - min)) * 100 )
+          consoling();
+          props.onChanged(conversionRate, props.index);
+          e.stopPropagation();
+          e.preventDefault();
+        }        
+    }
+
+    return (
+        <g>
+            <rect fill="red" x={props.x} y={props.y + props.height / 0.77 - 5 } width={props.width} height={10}
+            onMouseDown={(e) => handleMouseDown(e)}
+            onMouseUp={(e) => handleMouseUp(e)}
+            onMouseMove={(e) => (handleMouseMove(e), eX = e.clientX)}
+            />                
+            <circle r={5} fill="black" cx={circlePosition} cy={props.y + props.height / 0.77}
+            onMouseUp={(e) => handleMouseUp(e)}
+            onMouseDown={(e) => handleMouseDown(e)}
+            /> 
+        </g>
+    );
 };
 
 export default BarSlider;
