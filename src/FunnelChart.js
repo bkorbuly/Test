@@ -12,15 +12,22 @@ var roundedBars = (entry) => {
 class FunnelChart extends React.Component {       
     constructor(props){
         super(props);
-        this.rootDOM;
     }
+
     state = {
             data: this.props.data,
     }
 
     componentDidMount() {
         console.log('mounted');
-        var node = ReactDOM.findDOMNode(this.rootDOM);
+        console.log(this.bar);
+        var node = ReactDOM.findDOMNode(this.bar);
+        console.log(node);
+    }
+
+    componentDidUpdate(){
+        console.log('didupdate');
+        var node = ReactDOM.findDOMNode(this.bar);
         console.log(node);
     }
     
@@ -29,9 +36,9 @@ class FunnelChart extends React.Component {
         this.props.data[i].conversionRate = conversionRate
         this.props.onChanged(this.state.data[i])
     }
+
     
     render(){
-        console.log('!!!!!!!!!!!!!', this.rootDOM)
         return(
                 <ResponsiveContainer width = "95%" height={500}>
                     <BarChart data={this.props.data}
@@ -45,17 +52,17 @@ class FunnelChart extends React.Component {
                         <Legend />                      
                         
                         <Bar
-                            ref={(c) => this.rootDOM = c}
+                            
                         dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35}  >
                         {
                                 this.props.data.map((entry, index) => {
                                     return(
-                                    <Cell key={`greenCell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]}   />,
-                                    console.log(this.elem, this.rootDOM))},                                                                  
+                                    <Cell key={`greenCell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} ref={(c) => this.bar = c} />,
+                                    console.log('', this.ref))},                                                                  
                                     
                                 )
                         }                            
-                            <LabelList dataKey="conversionRate" content={ customizedLabel }   />                                                   
+                            <LabelList dataKey="conversionRate" content={ customizedLabel } />                                                   
                         </Bar>
                         <Bar dataKey="red" fill="#C92E25" stackId="a" key="red" >
                         {
