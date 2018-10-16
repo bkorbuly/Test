@@ -13,10 +13,10 @@ var calculateDataBasedOnConversionRate = (props, state) => {
 }
 
 var calculateDataBasedOnGreen = (props, state) => {
-    console.log(props);
     if(state.index == '') { return }
     if(!state.isOutOfIndex) { return }
-    if(state.green > (props.data[state.index - 1].green) || state.green < 0) { return }
+    console.log(state.green, (props.data[state.index - 1].green), state.green > (props.data[state.index - 1].green) );
+    if((state.green > (props.data[state.index - 1].green)) || (state.green < 0)) {console.log(state.green, (props.data[state.index - 1].green)); return }
     if(state.red == '' || state.red == 0 ) {
         return { conversionRate: Math.round((state.green / (props.data[state.index - 1].green)) * 100),
                  red: ((props.data[state.index - 1].green) - state.green ) 
@@ -27,6 +27,7 @@ var calculateDataBasedOnGreen = (props, state) => {
     }
 }
 
+//Make a common function for basedonred and for basedon green
 var calculateDataBasedOnRed = (props, state) => {
     let total;
     if(state.index == 0) { total = props.data[0].green }
@@ -46,28 +47,20 @@ var calculateDataBasedOnRed = (props, state) => {
     }
 }
 
-//Make a common function for basedonred and for basedon green
-//var calculateDataBasedOnRed = (props, state) => {
-//    if(state.index == '') { return }
-//    if(!state.isOutOfIndex) { return }
-//    if(state.red > (props.data[state.index - 1].green) || state.red < 0 ) {return}
-//    if(state.green == '' || state.green == 0 ) {
-//        console.log('green = 0')
-//        return { conversionRate: Math.round(((props.data[state.index - 1].green / (props.data[state.index - 1].green + 0)) * 100)),
-//                 green: (props.data[state.index - 1].green - state.red ) 
-//    }}
-//    console.log('legalso red ag',state.red, state.green, (props.data[state.index -1 ].green), (state.green / (props.data[state.index -1 ].green)), (props.data[state.index - 1].green - state.red) );
-//    return {
-//        conversionRate: Math.round((state.green / (props.data[state.index -1 ].green)) * 100),
-//        green: (props.data[state.index - 1].green - state.red),        
-//    }
-//}
+var setDataBasedOnIndex = (props, state) => {
+    return{
+        green:props.data[state.index].green,
+        red:props.data[state.index].red,
+        name:props.data[state.index].name,
+        conversionRate:props.data[state.index].conversionRate,
+    }
+}
 
 var calculateValue = {
     conversionRate: (props, state) => calculateDataBasedOnConversionRate(props, state),
     green: (props, state) => calculateDataBasedOnGreen(props, state),
     red: (props, state) => calculateDataBasedOnRed(props, state),
-    //{id:"red", handler:''},
+    index: (props, state) => setDataBasedOnIndex(props, state),
 };
 
 class AddLvlButton extends React.Component {
@@ -99,15 +92,15 @@ class AddLvlButton extends React.Component {
     checkIndex = () => {
         this.setState( {isOutOfIndex:  (this.lowerLimitCheck())  && (this.upperLimitCheck()) ? true : false
             //setState ASNYC
-        }, () => this.handleConversionRate());
+        }, () => this.handleConversionRate())
     }
 
     handleConversionRate = () => {
+        
         console.log(this.state.isOutOfIndex)
         if(this.state.isOutOfIndex){
             this.setState(calculateValue[this.state.eventTargetId](this.props, this.state));
         }
-        
     }
 
     render() {
@@ -135,7 +128,8 @@ class AddLvlButton extends React.Component {
                     placeholder = "Red Value" required />
                 <input type="number" min='0' max={this.props.datalength - 1}
                     value = {this.state.index}
-                    onChange = {(event) => this.setState({ index: event.target.value}, () => this.checkIndex())}
+                    id="index"
+                    onChange = {(event) => this.setState({ index: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.checkIndex())}
                     placeholder = "Index" required />
                 <button type="submit" disabled={!this.state.isOutOfIndex}>Add new Level</button>
             </form>
