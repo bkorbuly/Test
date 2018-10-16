@@ -4,15 +4,31 @@ const handleClick = (element) => {
   console.log('Gottcha!!!!', element);
 }
 
-const customizedLabel = (props) => {
-    const { x, y, width, height, value } = props;
-    return (
-      <g>
-        <text x={x + width / 2} y={y + (height / 2)} fill="#000000" textAnchor="middle" dominantBaseline="middle" onClick={(element)=> handleClick(element)}>
-          {value}
-        </text>
-      </g>
-    );
+class CustomizedLabel extends React.Component {    
+  
+  componentDidMount() {
+    console.log('customized label mount')
+      this.props.getBarWidth(this.props.width)
+    };
+
+  componentDidUpdate(prevProps) {
+    if(this.props.barWidths !== prevProps.barWidths){
+    console.log('customized label update')
+      this.props.getBarWidth(this.props.width)
+    }
+  }
+
+    render(){
+      const { x, y, width, height, value } = this.props;
+      return (
+        <g>
+          <text x={x + width / 2} y={y + (height / 2)} fill="#000000" textAnchor="middle" dominantBaseline="middle" onClick={(element)=> handleClick(element)}>
+            {value}
+          </text>
+        </g>
+      );
+    }
+    
   };
 
-  export default customizedLabel ;
+  export default CustomizedLabel ;

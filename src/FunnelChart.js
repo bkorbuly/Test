@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Cell, Dot, LabelList, Line, ScatterChart } from 'recharts';
-import customizedLabel from './customizedLabel.js';
+import CustomizedLabel from './CustomizedLabel.js';
 import BarSlider from './BarSlider.js';
 import ReactDOM from 'react-dom';
 
@@ -16,19 +16,20 @@ class FunnelChart extends React.Component {
 
     state = {
             data: this.props.data,
+            barWidths: [],
     }
 
     componentDidMount() {
-        console.log('mounted');
-        console.log(this.bar);
-        var node = ReactDOM.findDOMNode(this.bar);
-        console.log(node);
+        console.log('Mount:', this.props)
     }
 
-    componentDidUpdate(){
-        console.log('didupdate');
-        var node = ReactDOM.findDOMNode(this.bar);
-        console.log(node);
+    componentDidUpdate(prevProps){
+        if(this.props.barWidths !== prevProps.barWidths){
+            console.log('update', this.state.barWidths)
+            this.setState({
+                barWidths: this.props.barWidths
+            }, () => console.log('update', this.state.barWidths), this.forceUpdate())
+        }
     }
     
     onChanged = (conversionRate, i) => {
@@ -37,6 +38,18 @@ class FunnelChart extends React.Component {
         this.props.onChanged(this.state.data[i])
     }
 
+    getBarWidth = (width) => {
+        this.setState(prevState => ({
+            barWidths: prevState.barWidths.concat(width)
+        }), () => console.log(this.state.barWidths));       
+    }
+
+    passBarWidth = () => {
+        if(this.state.barWidths.length == 8){
+            console.log('passing it to app.js');
+            this.props.getBarWidth(this.state.barWidths);
+        }
+    }
     
     render(){
         return(
@@ -50,34 +63,29 @@ class FunnelChart extends React.Component {
                         <XAxis type="number" />
                         <YAxis type="category" dataKey="name" margin={{top: 100}}/>
                         <Legend />                      
-                        
                         <Bar
-                            
+                        ref = {(c) => this.bar = c}
                         dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35}  >
                         {
-                                this.props.data.map((entry, index) => {
-                                    return(
-                                    <Cell key={`greenCell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} ref={(c) => this.bar = c} />,
-                                    console.log('', this.ref))},                                                                  
-                                    
+                                this.props.data.map((entry, index) => (
+                                    <Cell key={`greenCell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} />
+                                    ),                                                                  
                                 )
                         }                            
-                            <LabelList dataKey="conversionRate" content={ customizedLabel } />                                                   
+                            <LabelList dataKey="conversionRate" content={ <CustomizedLabel getBarWidth={this.getBarWidth} /> }  />                                                   
                         </Bar>
                         <Bar dataKey="red" fill="#C92E25" stackId="a" key="red" >
                         {
-                            
-                                this.props.data.map((entry, index) => (
-                                    <Cell key={`redCell-${index}`} radius={[0, 15, 15, 0]}  />                                                                    
-                                    )
-                                )
-                                     
+                                this.props.data.map((entry, index) => {
+                                    return <Cell key={`redCell-${index}`} radius={[0, 15, 15, 0]}  />                                                                    
+                                
+                                }
+                                )         
                         }
-                            <LabelList dataKey='conversionRate' content={<BarSlider onChanged={this.onChanged}/> } id={this.props.data.index}  /> 
+                            <LabelList dataKey='conversionRate' content={<BarSlider onChanged={this.onChanged} id={this.props.data.index} barWidth={this.state.barWidths} /> } />
                         </Bar>
-                        <BarSlider></BarSlider>
                     </BarChart>           
-                </ResponsiveContainer>
+                </ResponsiveContainer>                    
         );
     } 
 };
