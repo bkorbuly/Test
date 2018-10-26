@@ -20,7 +20,6 @@ var lvlObjectCreation = (lvlInfo) => {
 class App extends Component {
   state = {
     data,
-    barWidths: [],
   };
 
   addNewLvl = (lvlInfo) =>{
@@ -35,7 +34,7 @@ class App extends Component {
   };
 
   editLvl = (lvlInfo) =>{
-    console.log('editLvl',lvlInfo);
+    console.log('',lvlInfo);
     const lvl = lvlObjectCreation(lvlInfo);
     console.log(lvl);
     this.setState(prevState => ({
@@ -64,17 +63,6 @@ class App extends Component {
         }      
     )}), () => console.log(this.state.data))   
   };
-
-  getBarWidth = (widths) => {
-    console.log('FunnelChart barwidth in componentdidupdate', widths)
-    
-        this.setState(prevState => { 
-          let newData = prevState.barWidths.splice(0);
-          console.log('new data', newData);
-          newData.concat(widths);
-            return {barWidths: newData};
-          })   
-  }
 
   render() {
     return (

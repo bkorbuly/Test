@@ -20,28 +20,36 @@ class FunnelChart extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Mount:', this.props)
+        console.log('FunnelChart Component DidMount:', this.props)
     }
 
     componentDidUpdate(prevProps){
         if(this.props.barWidths !== prevProps.barWidths){
-            console.log('update', this.state.barWidths)
+            console.log('FunnelChart Component DidUpdate', this.state.barWidths)
             this.setState({
                 barWidths: this.props.barWidths
-            }, () => console.log('update', this.state.barWidths), this.forceUpdate())
+            }, () => console.log('Setting FunnelChart barWidths state from props', this.state.barWidths), this.forceUpdate())
         }
     }
     
     onChanged = (conversionRate, i) => {
-        console.log("gottcha");
+        console.log("FunnelChart onChagned function invoked");
         this.props.data[i].conversionRate = conversionRate
         this.props.onChanged(this.state.data[i])
     }
 
     getBarWidth = (width) => {
-        this.setState(prevState => ({
-            barWidths: prevState.barWidths.concat(width)
-        }), () => console.log(this.state.barWidths));       
+        console.log("FunnelChart getBarWidth width parameters value", width)
+        this.setState(prevState => {
+            let newArr = prevState.barWidths
+            if(prevState.barWidths.length >= 8) {
+                newArr = [];
+            }            
+            console.log("FunnelChart getBarWidth setState values(prevstate, newArr, width)", prevState, newArr, width);
+            newArr.push(width);
+            console.log("FunnelChart getBarWidth setState values after concat(newArr, width)", newArr, width);
+            return{ barWidths: newArr }
+        }, () => console.log('FunnelChart getBarWidth setstate part of the function invoked', this.state.barWidths));       
     }
 
     passBarWidth = () => {
@@ -64,7 +72,6 @@ class FunnelChart extends React.Component {
                         <YAxis type="category" dataKey="name" margin={{top: 100}}/>
                         <Legend />                      
                         <Bar
-                        ref = {(c) => this.bar = c}
                         dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35}  >
                         {
                                 this.props.data.map((entry, index) => (

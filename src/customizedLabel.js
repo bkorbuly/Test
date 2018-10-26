@@ -7,13 +7,13 @@ const handleClick = (element) => {
 class CustomizedLabel extends React.Component {    
   
   componentDidMount() {
-    console.log('customized label mount')
+    console.log('CustomizedLabel Component DidMount')
       this.props.getBarWidth(this.props.width)
     };
 
   componentDidUpdate(prevProps) {
     if(this.props.barWidths !== prevProps.barWidths){
-    console.log('customized label update')
+    console.log('CustomizedLabel Component DidUpdate')
       this.props.getBarWidth(this.props.width)
     }
   }
