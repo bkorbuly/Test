@@ -34,9 +34,7 @@ class App extends Component {
   };
 
   editLvl = (lvlInfo) =>{
-    console.log('',lvlInfo);
     const lvl = lvlObjectCreation(lvlInfo);
-    console.log(lvl);
     this.setState(prevState => ({
           data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)      
           }
@@ -44,7 +42,6 @@ class App extends Component {
   };
 
   removeLvl = (lvlName) =>{
-    console.log(lvlName);
     this.setState(prevState => ({
       data: prevState.data.filter(lvl => lvl.name.toLowerCase() !== lvlName.name.toLowerCase())
       }
@@ -52,7 +49,6 @@ class App extends Component {
   };
 
   reCalculating = () => {
-    console.log('Recalculating the whole chart');
     this.setState( prevState => ({
         data: prevState.data.map((lvl, index, arr) => {
         if(index != 0){
@@ -61,7 +57,7 @@ class App extends Component {
         }
         return lvl
         }      
-    )}), () => console.log(this.state.data))   
+    )}))   
   };
 
   render() {

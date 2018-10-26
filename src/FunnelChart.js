@@ -25,36 +25,36 @@ class FunnelChart extends React.Component {
 
     componentDidUpdate(prevProps){
         if(this.props.barWidths !== prevProps.barWidths){
-            console.log('FunnelChart Component DidUpdate', this.state.barWidths)
+   //         console.log('FunnelChart Component DidUpdate', this.state.barWidths)
             this.setState({
                 barWidths: this.props.barWidths
-            }, () => console.log('Setting FunnelChart barWidths state from props', this.state.barWidths), this.forceUpdate())
+            }, () => this.forceUpdate())
         }
     }
     
     onChanged = (conversionRate, i) => {
-        console.log("FunnelChart onChagned function invoked");
+  //      console.log("FunnelChart onChagned function invoked");
         this.props.data[i].conversionRate = conversionRate
         this.props.onChanged(this.state.data[i])
     }
 
     getBarWidth = (width) => {
-        console.log("FunnelChart getBarWidth width parameters value", width)
+    //    console.log("FunnelChart getBarWidth width parameters value", width)
         this.setState(prevState => {
             let newArr = prevState.barWidths
             if(prevState.barWidths.length >= 8) {
                 newArr = [];
             }            
-            console.log("FunnelChart getBarWidth setState values(prevstate, newArr, width)", prevState, newArr, width);
+      //      console.log("FunnelChart getBarWidth setState values(prevstate, newArr, width)", prevState, newArr, width);
             newArr.push(width);
-            console.log("FunnelChart getBarWidth setState values after concat(newArr, width)", newArr, width);
+     //       console.log("FunnelChart getBarWidth setState values after concat(newArr, width)", newArr, width);
             return{ barWidths: newArr }
-        }, () => console.log('FunnelChart getBarWidth setstate part of the function invoked', this.state.barWidths));       
+        },);       
     }
 
     passBarWidth = () => {
         if(this.state.barWidths.length == 8){
-            console.log('passing it to app.js');
+ //           console.log('passing it to app.js');
             this.props.getBarWidth(this.state.barWidths);
         }
     }
