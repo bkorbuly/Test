@@ -2,7 +2,6 @@ import React from 'react';
 import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Cell, Dot, LabelList, Line, ScatterChart } from 'recharts';
 import CustomizedLabel from './CustomizedLabel.js';
 import BarSlider from './BarSlider.js';
-import ReactDOM from 'react-dom';
 
 var roundedBars = (entry) => {
     return entry.red == 0 ? 15 : 0;
@@ -12,6 +11,7 @@ var roundedBars = (entry) => {
 class FunnelChart extends React.Component {       
     constructor(props){
         super(props);
+        console.log("FunnelChart constructor")
     }
 
     state = {
@@ -24,17 +24,17 @@ class FunnelChart extends React.Component {
     }
 
     componentDidUpdate(prevProps){
+        console.log('FunnelChart Component DidUpdate')
         if(this.props.barWidths !== prevProps.barWidths){
-   //         console.log('FunnelChart Component DidUpdate', this.state.barWidths)
             this.setState({
                 barWidths: this.props.barWidths
             }, () => this.forceUpdate())
         }
     }
     
-    onChanged = (conversionRate, i) => {
-  //      console.log("FunnelChart onChagned function invoked");
-        this.props.data[i].conversionRate = conversionRate
+    handleChange = (conversionRate, i) => {
+      console.log("FunnelChart onChagned function invoked");
+        this.state.data[i].conversionRate = conversionRate;
         this.props.onChanged(this.state.data[i])
     }
 
@@ -85,11 +85,10 @@ class FunnelChart extends React.Component {
                         {
                                 this.props.data.map((entry, index) => {
                                     return <Cell key={`redCell-${index}`} radius={[0, 15, 15, 0]}  />                                                                    
-                                
                                 }
                                 )         
                         }
-                            <LabelList dataKey='conversionRate' content={<BarSlider onChanged={this.onChanged} id={this.props.data.index} barWidth={this.state.barWidths} /> } />
+                            <LabelList dataKey='conversionRate' content={<BarSlider onChange={this.handleChange} id={this.props.data.index} barWidth={this.state.barWidths} /> } />
                         </Bar>
                     </BarChart>           
                 </ResponsiveContainer>                    

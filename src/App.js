@@ -21,7 +21,14 @@ class App extends Component {
   state = {
     data,
   };
+  constructor(props){
+    super(props);
+    console.log("App.js consturctor")
+  }
 
+  componentDidUpdate(){
+    console.log("App.js componentDidUpdate")
+  }
   addNewLvl = (lvlInfo) =>{
     const lvl = lvlObjectCreation(lvlInfo);
     this.setState(prevState => {
@@ -66,7 +73,7 @@ class App extends Component {
         <h1>Funnel Calculator</h1>
         <FunnelChart data={this.state.data} onChanged={this.editLvl} getBarWidth={this.getBarWidth} barWidths={this.state.barWidths}/>
         <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length} data={this.state.data} />
-        <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length} />
+        <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}  />
         <RemoveLvlButton onSubmit={this.removeLvl} />
       </div>
     );
