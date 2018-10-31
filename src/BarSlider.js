@@ -1,4 +1,5 @@
 import React from 'react';
+import { data } from './data.js'
 
 class BarSlider extends React.Component {   
     min = 90;
@@ -36,7 +37,7 @@ class BarSlider extends React.Component {
     
       handleMouseUp = () => {
         this.setState({ isDraggable: false })
-        this.props.onChange(this.conversionRate, this.props.index)
+        
       };
     
       handleMouseDown = (e) => {        
@@ -88,24 +89,25 @@ class BarSlider extends React.Component {
             //if (yValue > 1) {
             //  yValue = 1
             //}
-            this.conversionRate = xValue;            
+            this.conversionRate = xValue;
+            this.props.onChange(this.conversionRate, this.props.index)            
           }
         }
       }
 
     render(){
 
-        if(this.props.barWidth){
-            return (
+        return (
             <g ref={ elem => this.elem = elem}>
                 <rect fill="red" x={90} y={this.props.y + this.props.height * 1.3 - (this.props.height / 4) /2 } width={this.props.width + this.props.barWidth[this.props.index] } height={this.props.height / 4}
-                //onMouseDown={(e) => this.handleMouseDown(e)} 
-                
                 />                
                 <circle r={this.props.height / 4 / 2} fill="black" cx={this.circlePosition} cy={this.props.y + this.props.height * 1.3}
                 onMouseDown={(e) => this.handleMouseDown(e)}        
                 /> 
             </g>);
+
+        if(this.props.barWidth){
+           
         }
         else{
             return null;

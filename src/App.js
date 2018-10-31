@@ -20,6 +20,7 @@ var lvlObjectCreation = (lvlInfo) => {
 class App extends Component {
   state = {
     data,
+    currentLvlIndex : 0,
   };
   constructor(props){
     super(props);
@@ -29,6 +30,7 @@ class App extends Component {
   componentDidUpdate(){
     console.log("App.js componentDidUpdate")
   }
+
   addNewLvl = (lvlInfo) =>{
     const lvl = lvlObjectCreation(lvlInfo);
     this.setState(prevState => {
@@ -41,6 +43,7 @@ class App extends Component {
   };
 
   editLvl = (lvlInfo) =>{
+    console.log("sss")
     const lvl = lvlObjectCreation(lvlInfo);
     this.setState(prevState => ({
           data : prevState.data.map((dataLvl, index) => index == lvlInfo.index ? lvl : dataLvl)      
@@ -56,6 +59,7 @@ class App extends Component {
   };
 
   reCalculating = () => {
+    console.log("itt vavy")
     this.setState( prevState => ({
         data: prevState.data.map((lvl, index, arr) => {
         if(index != 0){
@@ -67,12 +71,19 @@ class App extends Component {
     )}))   
   };
 
+  handleClick = (i) => {
+    this.setState({
+      currentLvlIndex : i
+    })
+    
+  }
+
   render() {
     return (
       <div width="1000px" height="1500px">
         <h1>Funnel Calculator</h1>
-        <FunnelChart data={this.state.data} onChanged={this.editLvl} getBarWidth={this.getBarWidth} barWidths={this.state.barWidths}/>
-        <AddLvlButton onSubmit={this.addNewLvl} datalength={this.state.data.length} data={this.state.data} />
+        <FunnelChart data={this.state.data} onChanged={this.editLvl} getBarWidth={this.getBarWidth} barWidths={this.state.barWidths} getClickedBarIndex={this.handleClick}/>
+        <AddLvlButton onChange={this.editLvl} datalength={this.state.data.length} data={this.state.data} buttonName={"Edit"} currentLvlIndex={this.state.currentLvlIndex}/>
         <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}  />
         <RemoveLvlButton onSubmit={this.removeLvl} />
       </div>

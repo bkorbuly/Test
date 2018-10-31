@@ -27,7 +27,6 @@ var calculateDataBasedOnGreen = (props, state) => {
     }
 }
 
-//Make a common function for basedonred and for basedon green
 var calculateDataBasedOnRed = (props, state) => {
     let total;
     if(state.index == 0) { total = props.data[0].green }
@@ -73,6 +72,19 @@ class AddLvlButton extends React.Component {
               isOutOfIndex: false,
               eventTargetId:'',
     }
+
+    componentWillReceiveProps(nextProps, nextState){
+        if(nextState != this.state)
+        {
+            this.setState({
+            name : this.props.data[this.props.currentLvlIndex].name,
+            green : this.props.data[this.props.currentLvlIndex].green,
+            red : this.props.data[this.props.currentLvlIndex].red,
+            index : this.props.data[this.props.currentLvlIndex].index,
+            conversionRate : this.props.data[this.props.currentLvlIndex].conversionRate
+            })
+        }      
+    }
     
     upperLimitCheck = () => {
         return this.state.index < this.props.data.length
@@ -90,10 +102,12 @@ class AddLvlButton extends React.Component {
     }
 
     checkIndex = () => {
-        this.setState( {isOutOfIndex:  (this.lowerLimitCheck())  && (this.upperLimitCheck()) ? true : false
-            //setState ASNYC
-        }, () => this.handleConversionRate())
-    }
+        if(this.state.index){
+            this.setState( {isOutOfIndex:  (this.lowerLimitCheck())  && (this.upperLimitCheck()) ? true : false
+                //setState ASNYC
+            }, () => this.handleConversionRate())
+        }
+        }
 
     handleConversionRate = () => {
         
@@ -131,7 +145,7 @@ class AddLvlButton extends React.Component {
                     id="index"
                     onChange = {(event) => this.setState({ index: event.target.value, eventTargetId: event.target.getAttribute('id')}, () => this.checkIndex())}
                     placeholder = "Index" required />
-                <button type="submit" disabled={!this.state.isOutOfIndex}>Add new Level</button>
+                <button type="submit" disabled={!this.state.isOutOfIndex}>{this.props.buttonName}</button>
             </form>
         )
     };

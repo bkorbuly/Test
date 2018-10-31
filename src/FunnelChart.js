@@ -58,6 +58,11 @@ class FunnelChart extends React.Component {
             this.props.getBarWidth(this.state.barWidths);
         }
     }
+
+    handleClick(i) {
+        console.log("klikked", i)
+        this.props.getClickedBarIndex(i)
+    }
     
     render(){
         return(
@@ -72,23 +77,23 @@ class FunnelChart extends React.Component {
                         <YAxis type="category" dataKey="name" margin={{top: 100}}/>
                         <Legend />                      
                         <Bar
+                        onClick={( d, i ) => this.handleClick(i)}
                         dataKey="green" fill="#80C25D" stackId="a" padding="0" margin="0" barSize={35}  >
                         {
                                 this.props.data.map((entry, index) => (
-                                    <Cell key={`greenCell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]} />
+                                    <Cell key={`cell-${index}`} radius={[0, roundedBars(entry), roundedBars(entry), 0]}  />
                                     ),                                                                  
                                 )
                         }                            
-                            <LabelList dataKey="conversionRate" content={ <CustomizedLabel getBarWidth={this.getBarWidth} /> }  />                                                   
+                                                                           
                         </Bar>
-                        <Bar dataKey="red" fill="#C92E25" stackId="a" key="red" >
+                        <Bar dataKey="red" fill="#C92E25" stackId="a" key="red" isAnimationActive={false}>
                         {
                                 this.props.data.map((entry, index) => {
-                                    return <Cell key={`redCell-${index}`} radius={[0, 15, 15, 0]}  />                                                                    
+                                    return <Cell key={`cell-${index}`} radius={[0, 15, 15, 0]}  />                                                                    
                                 }
                                 )         
                         }
-                            <LabelList dataKey='conversionRate' content={<BarSlider onChange={this.handleChange} id={this.props.data.index} barWidth={this.state.barWidths} /> } />
                         </Bar>
                     </BarChart>           
                 </ResponsiveContainer>                    
