@@ -87,7 +87,9 @@ class FunnelChart extends React.Component {
                         }                            
                                                                            
                         </Bar>
-                        <Bar dataKey="red" fill="#C92E25" stackId="a" key="red" isAnimationActive={false}>
+                        <Bar
+                        onClick={( d, i ) => this.handleClick(i)}
+                        dataKey="red" fill="#C92E25" stackId="a" key="red" isAnimationActive={false}>
                         {
                                 this.props.data.map((entry, index) => {
                                     return <Cell key={`cell-${index}`} radius={[0, 15, 15, 0]}  />                                                                    

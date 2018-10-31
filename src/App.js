@@ -80,10 +80,10 @@ class App extends Component {
 
   render() {
     return (
-      <div width="1000px" height="1500px">
+      <div width="500px" height="1500px">
         <h1>Funnel Calculator</h1>
-        <FunnelChart data={this.state.data} onChanged={this.editLvl} getBarWidth={this.getBarWidth} barWidths={this.state.barWidths} getClickedBarIndex={this.handleClick}/>
-        <AddLvlButton onChange={this.editLvl} datalength={this.state.data.length} data={this.state.data} buttonName={"Edit"} currentLvlIndex={this.state.currentLvlIndex}/>
+        <FunnelChart data={this.state.data} onChanged={this.editLvl} getBarWidth={this.getBarWidth} barWidths={this.state.barWidths} getClickedBarIndex={this.handleClick} />
+        <AddLvlButton onChange={this.editLvl} datalength={this.state.data.length} data={this.state.data} buttonName={"Edit"} currentLvlIndex={this.state.currentLvlIndex} key={this.state.currentLvlIndex}/>
         <EditLvlButton onSubmit={this.editLvl} datalength={this.state.data.length}  />
         <RemoveLvlButton onSubmit={this.removeLvl} />
       </div>
